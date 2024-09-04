@@ -35,18 +35,21 @@ first_msg_time = None
 last_msg_time = None
 
 # function to find number of occurrences of a substring in a string
-def numOccurrences(substr, content):
-    return len(re.findall(substr, content))
+def numOccurrences(substr, message):
+    if message == None:
+        return 0
+    else:
+        return len(re.findall(substr, message))
 
 # Find the correct messages
 for data in message_list:
     # Only Devan's messages
     if data["sender_name"] == DEVAN_USERNAME:
         message = data.get("content")
+        numOccurs = numOccurrences(SOB_EMOJI, message) # number of times sob emoji is in message
         # If contains sobbing, update all tracked values
-        if message != None and numOccurrences(SOB_EMOJI, message) > 0:
+        if numOccurs > 0:
             time_ms = data["timestamp_ms"] # time of message in ms
-            numOccurs = numOccurrences(SOB_EMOJI, message) # number of times sob emoji is in message
             # get first and last msg times
             if first_msg_time == None or time_ms < first_msg_time:
                 first_msg_time = time_ms
